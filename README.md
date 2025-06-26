@@ -14,16 +14,6 @@
 * Panel intuitivo: Interfaz web para gestionar todas tus tareas programadas
 * Motor confiable: Ejecución puntual con manejo de errores y reintentos
 
-### ⚙️ Arquitectura Técnica
-
-graph TD
-    U[Usuario] -->|Programa tarea| W[Web UI]
-    W --> A[API Go]
-    A --> D[(MySQL)]
-    S[Scheduler] -->|Consulta tareas| D
-    S -->|Ejecuta| E[Endpoint Externo]
-    E -->|Respuesta| L[Logs]
-
 ### 🌐 Endpoints de la API
 
 POST   /api/register     # Registro usuario
