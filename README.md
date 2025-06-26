@@ -16,12 +16,14 @@
 
 ### 🌐 Endpoints de la API
 
-POST   /api/register     # Registro usuario
-POST   /api/login        # Autenticación
-GET    /api/tasks        # Listar tareas
-POST   /api/tasks        # Crear nueva tarea
-PUT    /api/tasks/{id}   # Actualizar tarea
-DELETE /api/tasks/{id}   # Eliminar tarea
+| Método | Ruta                | Descripción                  |
+|--------|---------------------|------------------------------|
+| POST   | `/api/register`     | Registrar nuevo usuario      |
+| POST   | `/api/login`        | Autenticar usuario           |
+| POST   | `/api/tasks`        | Crear nueva tarea programada |
+| GET    | `/api/tasks`        | Listar tareas del usuario    |
+| PUT    | `/api/tasks/{id}`   | Actualizar tarea existente   |
+| DELETE | `/api/tasks/{id}`   | Eliminar tarea               |
 
 ### 📄 Licencia
 
