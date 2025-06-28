@@ -1,15 +1,32 @@
 package main
 
 import (
+	"net/http"
+	"os"
+
 	"github.com/LuisAGP/cronjobs/app/handlers"
 	"github.com/LuisAGP/cronjobs/app/middleware"
 	"github.com/LuisAGP/cronjobs/app/services"
+	"github.com/LuisAGP/cronjobs/migrations"
 	"github.com/gin-gonic/gin"
+	"github.com/joho/godotenv"
 )
 
 func main() {
+	godotenv.Load()
+	ginMode := os.Getenv("GIN_MODE")
+
+	gin.SetMode(ginMode)
 	r := gin.Default()
 	db := services.DB()
+	args := os.Args
+
+	// Se aplican migraciones
+	if len(args) > 1 {
+		if args[1] == "--migrate" {
+			migrations.ApplyMigrations()
+		}
+	}
 
 	// Middleware para inyectar la base de datos
 	r.Use(func(c *gin.Context) {
@@ -25,6 +42,9 @@ func main() {
 	protected := r.Group("/api")
 	protected.Use(middleware.AuthMiddleware())
 	{
+		protected.GET("/ping", func(c *gin.Context) {
+			c.JSON(http.StatusAccepted, gin.H{"message": "pong"})
+		})
 		// protected.GET("/tasks", handlers.GetTasks)
 		// protected.POST("/tasks", handlers.CreateTask)
 	}

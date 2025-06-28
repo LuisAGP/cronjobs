@@ -9,7 +9,7 @@ func ApplyMigrations() {
 	db := services.DB()
 
 	// Migraciones
-	db.AutoMigrate(
+	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
 		&models.User{},
 	)
 }

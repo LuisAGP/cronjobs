@@ -9,19 +9,19 @@ import (
 )
 
 type Claims struct {
-	UserId uint   `json:"user_id"`
+	UserID uint   `json:"user_id"`
 	Email  string `json:"email"`
 	jwt.RegisteredClaims
 }
 
-func GenerateToken(userId uint, email string) (string, error) {
+func GenerateToken(userID uint, email string) (string, error) {
 	godotenv.Load()
 	jwtSecret := os.Getenv("JWT_SECRET")
 
 	expirationTime := time.Now().Add(12 * time.Hour)
 
 	claims := &Claims{
-		UserId: userId,
+		UserID: userID,
 		Email:  email,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(expirationTime),
@@ -29,7 +29,7 @@ func GenerateToken(userId uint, email string) (string, error) {
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(jwtSecret)
+	return token.SignedString([]byte(jwtSecret))
 }
 
 func ValidateToken(tokenString string) (*Claims, error) {
@@ -37,7 +37,7 @@ func ValidateToken(tokenString string) (*Claims, error) {
 	jwtSecret := os.Getenv("JWT_SECRET")
 
 	token, err := jwt.ParseWithClaims(tokenString, &Claims{}, func(token *jwt.Token) (interface{}, error) {
-		return jwtSecret, nil
+		return []byte(jwtSecret), nil
 	})
 
 	if err != nil {

@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -24,12 +25,13 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		claims, err := auth.ValidateToken(tokenParts[1])
 		if err != nil {
+			fmt.Println(err)
 			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Token inválido"})
 			return
 		}
 
 		// Guardar información del usuario en el contexto
-		c.Set("userId", claims.UserId)
+		c.Set("userId", claims.UserID)
 		c.Set("email", claims.Email)
 
 		c.Next()
