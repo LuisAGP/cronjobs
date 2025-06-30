@@ -1,0 +1,16 @@
+{{define "content"}}
+<div class="row">
+    <div class="column">
+        <h2>Dashboard</h2>
+        <p>Bienvenido, {{.User.Email}}.</p>
+        <p>Aquí puedes administrar tus tareas programadas.</p>
+        
+        <div class="row">
+            <div class="column">
+                <a class="button" href="/tasks">Ver mis tareas</a>
+                <a class="button button-outline" href="/tasks/new">Crear nueva tarea</a>
+            </div>
+        </div>
+    </div>
+</div>
+{{end}}

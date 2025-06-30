@@ -1,0 +1,57 @@
+/* Personalización para Milligram */
+body {
+    margin: 0;
+    padding: 0;
+}
+
+.navigation {
+    background: #9b4dca;
+    color: white;
+}
+
+.navigation a {
+    color: white;
+}
+
+.navigation-title {
+    color: white;
+    text-decoration: none;
+}
+
+.footer {
+    margin-top: 3rem;
+    padding: 1rem 0;
+    border-top: 1px solid #e1e1e1;
+}
+
+.error-message {
+    background: #ffd1d1;
+    border-left: 5px solid #ff5252;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    color: #ff5252;
+}
+
+.success-message {
+    background: #d1ffd1;
+    border-left: 5px solid #52ff52;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    color: #00a000;
+}
+
+.login-container {
+    /* max-width: 400px; */
+    margin: 0 auto;
+    padding: 2rem 0;
+}
+
+/* .button-primary {
+    background-color: #9b4dca;
+    border-color: #9b4dca;
+}
+
+.button-primary:hover {
+    background-color: #7e3fb5;
+    border-color: #7e3fb5;
+} */

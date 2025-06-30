@@ -1,0 +1,43 @@
+{{ define "base" }}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conjobs - {{.Title}}</title>
+    <link rel="stylesheet" href="/static/css/milligram.min.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <header></header>
+        <nav class="navigation">
+            <section class="container">
+                <a class="navigation-title" href="/">
+                    <h1 class="title">Conjobs</h1>
+                </a>
+                <ul class="navigation-list float-right">
+                    {{if .User}}
+                    <li class="navigation-item">Hola, {{.User.Email}}</li>
+                    <li class="navigation-item"><a href="/logout">Cerrar sesión</a></li>
+                    {{else}}
+                    <li class="navigation-item"><a href="/login">Iniciar sesión</a></li>
+                    <li class="navigation-item"><a href="/register">Registrarse</a></li>
+                    {{end}}
+                </ul>
+            </section>
+        </nav>
+    </header>
+
+    <main class="container" id="content">
+        {{ renderPartial .Tmpl }}
+    </main>
+
+    <footer class="footer">
+        <section class="container">
+            <p>&copy; Conjobs. Todos los derechos reservados.</p>
+        </section>
+    </footer>
+    <script src="/static/js/login.js"></script>
+</body>
+</html>
+{{end}}

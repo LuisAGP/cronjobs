@@ -18,23 +18,30 @@ func main() {
 
 	gin.SetMode(ginMode)
 	r := gin.Default()
-	db := services.DB()
-	args := os.Args
 
 	// Se aplican migraciones
+	args := os.Args
 	if len(args) > 1 {
 		if args[1] == "--migrate" {
 			migrations.ApplyMigrations()
 		}
 	}
 
+	// Cargar plantillas
+	services.SetHTMLTemplates(r)
+
+	// Configurar archivos estáticos
+	r.Static("/static", "./static")
+
 	// Middleware para inyectar la base de datos
+	db := services.DB()
 	r.Use(func(c *gin.Context) {
 		c.Set("db", db)
 		c.Next()
 	})
 
 	// Rutas públicas
+	r.GET("/login", handlers.LoginView)
 	r.POST("/api/register", handlers.Register)
 	r.POST("/api/login", handlers.Login)
 

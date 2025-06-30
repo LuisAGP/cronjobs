@@ -6,9 +6,16 @@ import (
 	"github.com/LuisAGP/cronjobs/app/auth"
 	"github.com/LuisAGP/cronjobs/app/inputs"
 	"github.com/LuisAGP/cronjobs/app/models"
+	"github.com/LuisAGP/cronjobs/app/services"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
+
+func LoginView(c *gin.Context) {
+	services.View(c, "login", gin.H{
+		"Title": "login",
+	})
+}
 
 func Login(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
