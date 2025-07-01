@@ -2,22 +2,85 @@ package handlers
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/LuisAGP/cronjobs/app/auth"
 	"github.com/LuisAGP/cronjobs/app/inputs"
 	"github.com/LuisAGP/cronjobs/app/models"
 	"github.com/LuisAGP/cronjobs/app/services"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
 func LoginView(c *gin.Context) {
+	session := sessions.Default(c)
+	err := session.Get("error")
+	session.Delete("error")
+	session.Save()
+
 	services.View(c, "login", gin.H{
 		"Title": "login",
+		"Error": err,
 	})
 }
 
 func Login(c *gin.Context) {
+	db := c.MustGet("db").(*gorm.DB)
+	session := sessions.Default(c)
+	var input inputs.LoginInput
+
+	if err := c.ShouldBind(&input); err != nil {
+		session.Set("error", err.Error())
+		session.Save()
+		c.Redirect(http.StatusFound, "/login")
+		return
+	}
+
+	var user models.User
+	if err := db.Where("email = ?", input.Email).First(&user).Error; err != nil {
+		session.Set("error", "Credenciales inválidas")
+		session.Save()
+		c.Redirect(http.StatusFound, "/login")
+		return
+	}
+
+	if !auth.CheckPassword(input.Password, user.Password) {
+		session.Set("error", "Credenciales inválidas")
+		session.Save()
+		c.Redirect(http.StatusFound, "/login")
+		return
+	}
+
+	token, err := auth.GenerateToken(user.ID, user.Email)
+	if err != nil {
+		session.Set("error", "Error al autenticar usuario. Intente de nuevo por favor")
+		session.Save()
+		c.Redirect(http.StatusFound, "/login")
+		return
+	}
+
+	c.SetCookie(
+		"access_token",
+		token,
+		int(3*time.Hour.Seconds()), // Expiración: 3 horas
+		"/",
+		c.Request.URL.Hostname(),
+		false, // Solo HTTPS en producción
+		true,  // HTTP-only
+	)
+
+	// Redirigimos al dashboard
+	c.Redirect(http.StatusFound, "/dashboard")
+
+}
+
+func Logout(c *gin.Context) {
+	c.SetCookie("access_token", "", -1, "/", c.Request.URL.Hostname(), false, true)
+	c.Redirect(http.StatusFound, "/login")
+}
+
+func ApiLogin(c *gin.Context) {
 	db := c.MustGet("db").(*gorm.DB)
 	var input inputs.LoginInput
 

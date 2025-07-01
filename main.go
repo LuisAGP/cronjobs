@@ -8,6 +8,8 @@ import (
 	"github.com/LuisAGP/cronjobs/app/middleware"
 	"github.com/LuisAGP/cronjobs/app/services"
 	"github.com/LuisAGP/cronjobs/migrations"
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 )
@@ -18,6 +20,11 @@ func main() {
 
 	gin.SetMode(ginMode)
 	r := gin.Default()
+
+	// Middleware de sesión
+	secret := os.Getenv("JWT_SECRET")
+	store := cookie.NewStore([]byte(secret))
+	r.Use(sessions.Sessions("sessions", store))
 
 	// Se aplican migraciones
 	args := os.Args
@@ -40,21 +47,39 @@ func main() {
 		c.Next()
 	})
 
+	/*************************************** RUTAS PÁGINA ****************************************/
+
 	// Rutas públicas
+	r.GET("/", handlers.HomeView)
 	r.GET("/login", handlers.LoginView)
+	r.POST("/login", handlers.Login)
+
+	// Grupo de rutas protegidas
+	protected := r.Group("/")
+	protected.Use(middleware.AuthMiddleware())
+	{
+		protected.GET("/logout", handlers.Logout)
+		protected.GET("/dashboard", handlers.DashboardView)
+	}
+
+	/*********************************************************************************************/
+
+	/***************************************** RUTAS API *****************************************/
+
+	// Rutas públicas
 	r.POST("/api/register", handlers.Register)
 	r.POST("/api/login", handlers.Login)
 
 	// Grupo de rutas protegidas
-	protected := r.Group("/api")
-	protected.Use(middleware.AuthMiddleware())
+	protectedAPI := r.Group("/api")
+	protectedAPI.Use(middleware.AuthMiddlewareAPI())
 	{
-		protected.GET("/ping", func(c *gin.Context) {
+		protectedAPI.GET("/ping", func(c *gin.Context) {
 			c.JSON(http.StatusAccepted, gin.H{"message": "pong"})
 		})
-		// protected.GET("/tasks", handlers.GetTasks)
-		// protected.POST("/tasks", handlers.CreateTask)
 	}
+
+	/*********************************************************************************************/
 
 	r.Run(":8080")
 }

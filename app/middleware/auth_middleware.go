@@ -6,10 +6,38 @@ import (
 	"strings"
 
 	"github.com/LuisAGP/cronjobs/app/auth"
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 )
 
 func AuthMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		session := sessions.Default(c)
+		token, err := c.Cookie("access_token")
+
+		if err != nil {
+			session.Set("error", "No hay una sesión activa")
+			session.Save()
+			c.Redirect(http.StatusFound, "/login")
+			return
+		}
+
+		claims, err := auth.ValidateToken(token)
+
+		if err != nil {
+			session.Set("error", "No hay una sesión activa")
+			session.Save()
+			c.Redirect(http.StatusFound, "/login")
+			return
+		}
+
+		c.Set("userID", claims.UserID)
+		c.Next()
+		return
+	}
+}
+
+func AuthMiddlewareAPI() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {

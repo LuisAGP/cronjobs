@@ -1,21 +1,109 @@
 /* Personalización para Milligram */
+:root {
+    --primary: #2c3e50;
+    --accent: #3498db;
+    --bg: #ffffff;
+    --text: #333;
+    --text-muted: #888;
+}
+
 body {
-    margin: 0;
-    padding: 0;
+    margin: 8rem 0 0 0;
+    background-color: #f9f9f9;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: var(--text);
 }
 
-.navigation {
-    background: #9b4dca;
-    color: white;
+.navbar {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--bg);
+    border-bottom: 1px solid #eee;
+    position: fixed;
+    top: 0;
+    z-index: 1;
 }
 
-.navigation a {
-    color: white;
-}
-
-.navigation-title {
-    color: white;
+.navbar .brand {
+    font-weight: 600;
+    font-size: 3rem;
+    color: var(--primary);
     text-decoration: none;
+}
+
+.navbar nav {
+    display: flex;
+    gap: 4rem;
+}
+
+.navbar nav a {
+    text-decoration: none;
+    color: var(--text-muted);
+    font-weight: 500;
+    font-size: 1.6rem;
+    transition: color 0.2s ease;
+}
+
+.navbar nav a:hover {
+    color: var(--primary);
+}
+
+.menu-toggle {
+    display: none;
+    font-size: 2.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+
+    nav#main-menu {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        gap: 1rem;
+        margin-top: 1rem;
+        animation: fadeIn 0.3s ease-in-out;
+    }
+
+    nav#main-menu.show {
+        display: flex;
+    }
+
+    .navbar {
+        flex-wrap: wrap;
+        flex-direction: row;
+        align-items: flex-start;
+    }
+
+    .navbar nav a {
+        font-size: 2rem;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container {
+    max-width: 960px;
+    margin: 2rem auto;
+    padding: 0 1rem;
 }
 
 .footer {
@@ -40,18 +128,122 @@ body {
     color: #00a000;
 }
 
+.center-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
 .login-container {
-    /* max-width: 400px; */
-    margin: 0 auto;
-    padding: 2rem 0;
+    max-width: 380px;
+    margin: 4rem auto;
+    background-color: white;
+    padding: 2.5rem;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
 }
 
-/* .button-primary {
-    background-color: #9b4dca;
-    border-color: #9b4dca;
+.login-container h3 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--primary);
 }
 
-.button-primary:hover {
-    background-color: #7e3fb5;
-    border-color: #7e3fb5;
-} */
+.login-container label {
+    color: var(--text);
+    font-weight: 500;
+    margin-bottom: 0.3rem;
+    display: inline-block;
+}
+
+.login-container input[type="email"],
+.login-container input[type="password"] {
+    margin-bottom: 1.5rem;
+}
+
+.login-container button {
+    width: 100%;
+    background-color: var(--primary);
+    border: none;
+}
+
+.login-container button:hover {
+    background-color: var(--accent);
+}
+
+.login-footer {
+    margin-top: 1rem;
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.login-footer a {
+    color: var(--accent);
+    text-decoration: none;
+}
+
+
+.hero {
+    background: linear-gradient(135deg, #3498db, #2c3e50);
+    color: white;
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.hero h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.hero p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+}
+
+.hero .button {
+    margin: 0 0.5rem;
+}
+
+.features {
+    padding: 4rem 2rem;
+    background: #fff;
+}
+
+.features h2 {
+    text-align: center;
+    margin-bottom: 3rem;
+    color: #2c3e50;
+}
+
+.features .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.features .column {
+    flex: 1 1 250px;
+    max-width: 320px;
+    text-align: center;
+}
+
+.features .column h4 {
+    color: #3498db;
+}
+
+.cta {
+    background: #f5f5f5;
+    text-align: center;
+    padding: 3rem 2rem;
+}
+
+.cta h2 {
+    margin-bottom: 1rem;
+}
+
+.cta p {
+    margin-bottom: 2rem;
+}

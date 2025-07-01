@@ -1,34 +1,26 @@
 {{define "login"}}
-<div>
-    <h2>Iniciar sesión</h2>
-    
-    {{if .Error}}
-    <div class="error-message">
-        {{.Error}}
-    </div>
-    {{end}}
-    
-    <div class="row">
-        <div class="column column-100 column-50@medium">
-            <form method="POST" action="/login" id="loginForm">
-                <fieldset>
-                    <label for="email">Correo electrónico</label>
-                    <input type="email" id="email" name="email" placeholder="tu@email.com" required>
-                    
-                    <label for="password">Contraseña</label>
-                    <input type="password" id="password" name="password" placeholder="Tu contraseña" required>
-                    
-                    <div class="float-right">
-                        <a href="#">¿Olvidaste tu contraseña?</a>
-                    </div>
-                    
-                    <input class="button-primary" type="submit" value="Iniciar sesión">
-                </fieldset>
-            </form>
-            <div class="text-center">
-                <a href="/register">¿No tienes cuenta? Regístrate</a>
-            </div>
+<div class="center-container">
+    <div class="login-container">
+        <h2>Iniciar sesión</h2>
+
+        {{ if .Error }}
+        <div class="error-message">
+            {{ .Error }}
         </div>
+        {{ end }}
+
+        <form method="POST" action="/login">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="you@example.com" required>
+
+            <label for="password">Contraseña</label>
+            <input type="password" id="password" name="password" placeholder="" required>
+
+            <button class="button-primary" type="submit">Sign In</button>
+        </form>
     </div>
 </div>
+
+<!-- Scripts -->
+<script src="/static/js/login.js"></script>
 {{end}}
