@@ -1,6 +1,6 @@
 /* Personalización para Milligram */
 :root {
-    --primary: #2c3e50;
+    --primary: #142ab7;
     --accent: #3498db;
     --bg: #ffffff;
     --text: #333;
@@ -14,12 +14,23 @@ body {
     color: var(--text);
 }
 
+/* Estilos custom Milligram */
+.button, button, input[type='button'], input[type='reset'], input[type='submit'] {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+.button.button-outline, button.button-outline, input[type='button'].button-outline, input[type='reset'].button-outline, input[type='submit'].button-outline {
+    color: var(--primary);
+}
+/****************************/
+
 .navbar {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 1.4rem 3.5rem;
     background-color: var(--bg);
     border-bottom: 1px solid #eee;
     position: fixed;
@@ -28,8 +39,9 @@ body {
 }
 
 .navbar .brand {
-    font-weight: 600;
-    font-size: 3rem;
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
     color: var(--primary);
     text-decoration: none;
 }
@@ -59,6 +71,10 @@ body {
     cursor: pointer;
 }
 
+.menu-toggle:focus {
+    color: var(--accent);
+}
+
 @media (max-width: 768px) {
     .menu-toggle {
         display: block;
@@ -78,9 +94,9 @@ body {
     }
 
     .navbar {
+        padding: 1.2rem 1rem;
         flex-wrap: wrap;
         flex-direction: row;
-        align-items: flex-start;
     }
 
     .navbar nav a {
@@ -183,7 +199,6 @@ body {
     color: var(--accent);
     text-decoration: none;
 }
-
 
 .hero {
     background: linear-gradient(135deg, #3498db, #2c3e50);
