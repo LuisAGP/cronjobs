@@ -52,5 +52,6 @@ func View(c *gin.Context, template string, data gin.H) {
 	}
 
 	data["Tmpl"] = template
+	data["Path"] = c.FullPath()
 	c.HTML(http.StatusOK, "base", data)
 }

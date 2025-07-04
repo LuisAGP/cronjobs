@@ -1,48 +1,49 @@
 {{ define "base" }}
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Conjobs - {{.Title}}</title>
-    <link rel="stylesheet" href="/static/css/milligram.min.css">
+
+    <!-- Agregamos bootstrap -->
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+
     <link rel="stylesheet" href="/static/css/styles.css">
 </head>
+
 <body>
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light border-bottom">
+        <div class="container-fluid">
+            <!-- Logo/Brand -->
+            <a class="navbar-brand" href="/">
+                <img src="/static/img/cronjobs-logo.png" alt="Cronjobs logo" width="160">
+            </a>
 
-    <header class="navbar">
-        <a href="/" class="brand">
-            <img src="/static/img/cronjobs-logo.png" alt="Cronjobs logo" width="170px">
-        </a>
-        
-        <!-- Botón hamburguesa -->
-        <button class="menu-toggle button button-clear" onclick="toggleMenu()">☰</button>
+            <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas" role="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
 
-        <nav id="main-menu">
-            {{if .User}}
-            <a href="/">Home</a>
-            <a href="/docs">Docs</a>
-            <a href="/dashboard" class="btn btn-accent">Dashboard</a>
-            <a href="/logout">Cerrar sesión</a>
-            {{else}}
-            <a href="/login">Iniciar sesión</a>
-            <a href="/register">Registrarse</a>
-            {{end}}
-        </nav>
-    </header>
+            {{ template "nav-menu" . }}
 
-    <main class="container" id="content">
+        </div>
+    </nav>
+
+    <main class="container-fluid">
         {{ renderPartial .Tmpl . }}
     </main>
 
-    <footer class="footer">
+    <footer class="footer border-top mt-4">
         <section class="container">
-            <p>&copy; Conjobs. Todos los derechos reservados.</p>
+            <div>
+                <p>&copy; 2025 Conjobs. Todos los derechos reservados.</p>
+            </div>
         </section>
     </footer>
-
-    <!-- Scripts -->
-    <script src="/static/js/navbar.js"></script>
 </body>
+
 </html>
 {{end}}

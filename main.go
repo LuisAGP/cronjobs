@@ -40,6 +40,9 @@ func main() {
 	// Configurar archivos estáticos
 	r.Static("/static", "./static")
 
+	// Servir favicon.ico
+	r.StaticFile("/favicon.ico", "./static/favicon.ico")
+
 	// Middleware para inyectar la base de datos
 	db := services.DB()
 	r.Use(func(c *gin.Context) {
@@ -60,6 +63,9 @@ func main() {
 	{
 		protected.GET("/logout", handlers.Logout)
 		protected.GET("/dashboard", handlers.DashboardView)
+		protected.GET("/tasks", handlers.TasksView)
+		protected.GET("/logs", handlers.LogsView)
+		protected.GET("/docs", handlers.DocsView)
 	}
 
 	/*********************************************************************************************/
