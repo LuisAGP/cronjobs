@@ -1,26 +1,38 @@
 {{define "login"}}
-<div class="center-container">
-    <div class="login-container">
-        <h2>Iniciar sesión</h2>
+<div class="container d-flex justify-content-center mt-5">
+    <div class="card bg-white col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+        <div class="card-body px-4">
+            <h4 class="card-title mb-4">Iniciar sesión</h4>
 
-        {{ if .Error }}
-        <div class="error-message">
-            {{ .Error }}
+            <!-- Login Form -->
+            <form action="/login" method="POST">
+                {{if .Error}}
+                <div class="alert alert-danger">{{.Error}}</div>
+                {{end}}
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 btn-login mt-4">Login</button>
+
+                <div class="text-center mt-3">
+                    <a href="/forgot-password" class="text-decoration-none">Recuperar contraseña</a>
+                </div>
+            </form>
+
+            <hr class="my-4">
+
+            <div class="text-center">
+                <p class="text-muted">¿No tienes una cuenta? <a href="/register" class="text-decoration-none">Registrate</a></p>
+            </div>
         </div>
-        {{ end }}
-
-        <form method="POST" action="/login">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" placeholder="you@example.com" required>
-
-            <label for="password">Contraseña</label>
-            <input type="password" id="password" name="password" placeholder="" required>
-
-            <button class="button-primary" type="submit">Sign In</button>
-        </form>
     </div>
 </div>
-
-<!-- Scripts -->
-<script src="/static/js/login.js"></script>
 {{end}}

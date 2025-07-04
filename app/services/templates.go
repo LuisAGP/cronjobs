@@ -40,15 +40,18 @@ func SetHTMLTemplates(r *gin.Engine) {
 func View(c *gin.Context, template string, data gin.H) {
 	// Extraemos usuario si existe
 	db := c.MustGet("db").(*gorm.DB)
-	userID, _ := c.Get("userID")
+	userID, exists := c.Get("userID")
 
-	var user models.User
-	err := db.Where("id = ?", userID).First(&user).Error
+	if exists {
+		var user models.User
+		err := db.Where("id = ?", userID).First(&user).Error
 
-	if err == nil {
-		data["User"] = user
+		if err == nil {
+			data["User"] = user
+		}
 	}
 
 	data["Tmpl"] = template
+	data["Path"] = c.FullPath()
 	c.HTML(http.StatusOK, "base", data)
 }

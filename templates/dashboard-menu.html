@@ -1,0 +1,34 @@
+{{ define "dashboard_menu" }}
+<!-- Mobile -->
+<div class="offcanvas offcanvas-start bg-light dashboard-menu-desktop border-end bg-light" tabindex="-1" id="offcanvas" data-bs-keyboard="false" data-bs-backdrop="false">
+    <div class="offcanvas-body px-0">
+        <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-start" id="menu">
+            <!-- <li class="nav-item w-100">
+                <a href="/" class='nav-link {{ if eq .Path "/" }}active disabled{{end}}'>
+                    <i class="fs-5 bi-house"></i><span class="ms-3 d-inline">Home</span>
+                </a>
+            </li> -->
+            <li class="nav-item w-100">
+                <a href="/dashboard" class='nav-link {{ if eq .Path "/dashboard" }}active disabled{{end}}'>
+                    <i class="fs-5 bi-speedometer2"></i><span class="ms-3 d-inline">Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item w-100">
+                <a href="/tasks" class='nav-link {{ if eq .Path "/tasks" }}active disabled{{end}}'>
+                    <i class="fs-5 bi-table"></i><span class="ms-3 d-inline">Tareas</span>
+                </a>
+            </li>
+            <li class="nav-item w-100">
+                <a href="/logs" class='nav-link {{ if eq .Path "/logs" }}active disabled{{end}}'>
+                    <i class="fs-5 bi bi-file-earmark-medical"></i><span class="ms-3 d-inline">Logs</span>
+                </a>
+            </li>
+            <li class="nav-item w-100">
+                <a href="/docs" class='nav-link {{ if eq .Path "/docs" }}active disabled{{end}}'>
+                    <i class="fs-5 bi bi-book"></i><span class="ms-3 d-inline">Docs</span> 
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+{{ end }}

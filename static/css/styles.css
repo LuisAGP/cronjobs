@@ -1,249 +1,109 @@
-/* Personalización para Milligram */
-:root {
-    --primary: #2c3e50;
-    --accent: #3498db;
-    --bg: #ffffff;
-    --text: #333;
-    --text-muted: #888;
+/* Personalización para Bootstrap */
+:root{
+    --text-light: #dfdfdf;
+    --bg-dark: #151b42;
+    --bg-light: #f5f5f5;
+    --primary-color: #2d3778;
+    --primary-color-hover: #5c70bf;
+    --nav-height: 4rem;
+    --sidebar-width: 20%;
+    --content-width: 80%;
 }
 
 body {
-    margin: 8rem 0 0 0;
-    background-color: #f9f9f9;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: var(--nav-height) 0 0 0;
+    background-color: var(--bg-light);
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     color: var(--text);
+    min-height: calc(100vh - var(--nav-height));
 }
 
 .navbar {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 2rem;
-    background-color: var(--bg);
-    border-bottom: 1px solid #eee;
+    padding: 1rem 3rem;
+    height: var(--nav-height);
+}
+
+.offcanvas {
+    z-index: 3;
     position: fixed;
-    top: 0;
-    z-index: 1;
+    width: var(--sidebar-width);
+    top: var(--nav-height);
+    bottom: 0;
+    left: 0;
 }
 
-.navbar .brand {
-    font-weight: 600;
-    font-size: 3rem;
-    color: var(--primary);
-    text-decoration: none;
+.dashboard-menu-desktop {
+    visibility: visible !important;
 }
 
-.navbar nav {
-    display: flex;
-    gap: 4rem;
+.offcanvas-start {
+    top: var(--nav-height);
+    transform: none;
 }
 
-.navbar nav a {
-    text-decoration: none;
-    color: var(--text-muted);
-    font-weight: 500;
-    font-size: 1.6rem;
-    transition: color 0.2s ease;
-}
-
-.navbar nav a:hover {
-    color: var(--primary);
-}
-
-.menu-toggle {
-    display: none;
-    font-size: 2.5rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
-@media (max-width: 768px) {
-    .menu-toggle {
-        display: block;
+@media only screen and (max-width: 768px) {
+    :root {
+        --nav-height: 5rem;
     }
 
-    nav#main-menu {
-        display: none;
-        flex-direction: column;
-        width: 100%;
-        gap: 1rem;
-        margin-top: 1rem;
-        animation: fadeIn 0.3s ease-in-out;
+    .dashboard-menu-desktop {
+        visibility: hidden;
     }
 
-    nav#main-menu.show {
-        display: flex;
+    .offcanvas {
+        width: 50%;
+        transform: translateX(-100%);
     }
-
-    .navbar {
-        flex-wrap: wrap;
-        flex-direction: row;
-        align-items: flex-start;
-    }
-
-    .navbar nav a {
-        font-size: 2rem;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.container {
-    max-width: 960px;
-    margin: 2rem auto;
-    padding: 0 1rem;
 }
 
 .footer {
-    margin-top: 3rem;
-    padding: 1rem 0;
-    border-top: 1px solid #e1e1e1;
+    background-color: var(--bg-dark);
+    color: var(--text-light);
+    padding: 2rem 3rem;
+    z-index: 5;
 }
 
-.error-message {
-    background: #ffd1d1;
-    border-left: 5px solid #ff5252;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    color: #ff5252;
+.btn-primary, .btn-primary:active {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
 }
 
-.success-message {
-    background: #d1ffd1;
-    border-left: 5px solid #52ff52;
-    padding: 1rem;
-    margin-bottom: 1rem;
-    color: #00a000;
+.btn-primary:hover {
+    background-color: var(--primary-color-hover);
+    border-color: var(--primary-color-hover);
 }
 
-.center-container {
+.nav-link {
+    color: var(--primary-color);
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background-color: var(--primary-color);
+    border-radius: 0;
+}
+
+.main-container {
+    width: 100%;
+    height: 100%;
     display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
+    column-gap: 1rem;
 }
 
-.login-container {
-    max-width: 380px;
-    margin: 4rem auto;
-    background-color: white;
-    padding: 2.5rem;
-    border-radius: 10px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+.main-container .sidebar {
+    width: var(--sidebar-width);
 }
 
-.login-container h3 {
-    text-align: center;
-    margin-bottom: 2rem;
-    color: var(--primary);
-}
-
-.login-container label {
-    color: var(--text);
-    font-weight: 500;
-    margin-bottom: 0.3rem;
-    display: inline-block;
-}
-
-.login-container input[type="email"],
-.login-container input[type="password"] {
-    margin-bottom: 1.5rem;
-}
-
-.login-container button {
-    width: 100%;
-    background-color: var(--primary);
-    border: none;
-}
-
-.login-container button:hover {
-    background-color: var(--accent);
-}
-
-.login-footer {
+.main-container .content {
     margin-top: 1rem;
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--text-muted);
+    width: var(--content-width);
 }
 
-.login-footer a {
-    color: var(--accent);
-    text-decoration: none;
-}
-
-
-.hero {
-    background: linear-gradient(135deg, #3498db, #2c3e50);
-    color: white;
-    text-align: center;
-    padding: 4rem 2rem;
-}
-
-.hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
-.hero p {
-    font-size: 1.2rem;
-    margin-bottom: 2rem;
-}
-
-.hero .button {
-    margin: 0 0.5rem;
-}
-
-.features {
-    padding: 4rem 2rem;
-    background: #fff;
-}
-
-.features h2 {
-    text-align: center;
-    margin-bottom: 3rem;
-    color: #2c3e50;
-}
-
-.features .row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: center;
-}
-
-.features .column {
-    flex: 1 1 250px;
-    max-width: 320px;
-    text-align: center;
-}
-
-.features .column h4 {
-    color: #3498db;
-}
-
-.cta {
-    background: #f5f5f5;
-    text-align: center;
-    padding: 3rem 2rem;
-}
-
-.cta h2 {
-    margin-bottom: 1rem;
-}
-
-.cta p {
-    margin-bottom: 2rem;
+@media only screen and (max-width: 768px) {
+    :root {
+        --content-width: 100%;
+        --sidebar-width: 0%;
+    }
 }
