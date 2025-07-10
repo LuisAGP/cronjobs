@@ -26,7 +26,7 @@ func SetHTMLTemplates(r *gin.Engine) {
 		var tpl bytes.Buffer
 		err := tmpl.ExecuteTemplate(&tpl, name, data)
 		if err != nil {
-			return template.HTML("<strong>Error rendering partial</strong>")
+			return template.HTML("<strong>Error rendering partial: </strong>" + err.Error())
 		}
 		return template.HTML(tpl.String())
 	}

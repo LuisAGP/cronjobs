@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 
@@ -31,6 +32,8 @@ func main() {
 	if len(args) > 1 {
 		if args[1] == "--migrate" {
 			migrations.ApplyMigrations()
+			fmt.Fprintln(os.Stdout, "Finalizado.")
+			os.Exit(0)
 		}
 	}
 
