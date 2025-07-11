@@ -11,5 +11,6 @@ func ApplyMigrations() {
 	// Migraciones
 	db.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
 		&models.User{},
+		&models.Task{},
 	)
 }

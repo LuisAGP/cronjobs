@@ -15,20 +15,32 @@ func SetHTMLTemplates(r *gin.Engine) {
 	var tmpl *template.Template
 
 	// Primero creamos la FuncMap con una función vacía (por ahora)
-	funcMap := template.FuncMap{}
+	funcMap := template.FuncMap{
+		"renderPartial": func(name string, data any) template.HTML {
+			if name == "" {
+				return template.HTML("")
+			}
 
-	// Creamos función para renderizar template dentro de otro
-	funcMap["renderPartial"] = func(name string, data any) template.HTML {
-		if name == "" {
-			return template.HTML("")
-		}
-
-		var tpl bytes.Buffer
-		err := tmpl.ExecuteTemplate(&tpl, name, data)
-		if err != nil {
-			return template.HTML("<strong>Error rendering partial</strong>")
-		}
-		return template.HTML(tpl.String())
+			var tpl bytes.Buffer
+			err := tmpl.ExecuteTemplate(&tpl, name, data)
+			if err != nil {
+				return template.HTML("<strong>Error rendering partial: </strong>" + err.Error())
+			}
+			return template.HTML(tpl.String())
+		},
+		"default": func(value, defaultValue any) any {
+			if value == nil || value == "" {
+				return defaultValue
+			}
+			return value
+		},
+		"seq": func(start, end int) []int {
+			var sequence []int
+			for i := start; i <= end; i++ {
+				sequence = append(sequence, i)
+			}
+			return sequence
+		},
 	}
 
 	// Cargamos las plantillas con el FuncMap

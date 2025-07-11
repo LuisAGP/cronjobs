@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"os"
 
@@ -31,6 +32,8 @@ func main() {
 	if len(args) > 1 {
 		if args[1] == "--migrate" {
 			migrations.ApplyMigrations()
+			fmt.Fprintln(os.Stdout, "Finalizado.")
+			os.Exit(0)
 		}
 	}
 
@@ -66,6 +69,8 @@ func main() {
 		protected.GET("/tasks", handlers.TasksView)
 		protected.GET("/logs", handlers.LogsView)
 		protected.GET("/docs", handlers.DocsView)
+
+		protected.POST("/tasks", handlers.SaveTask)
 	}
 
 	/*********************************************************************************************/
@@ -83,6 +88,8 @@ func main() {
 		protectedAPI.GET("/ping", func(c *gin.Context) {
 			c.JSON(http.StatusAccepted, gin.H{"message": "pong"})
 		})
+
+		protectedAPI.POST("/tasks", handlers.SaveTask)
 	}
 
 	/*********************************************************************************************/
