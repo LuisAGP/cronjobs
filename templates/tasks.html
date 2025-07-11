@@ -1,7 +1,7 @@
 {{define "tasks"}}
 <div class="main-container">
     <div class="sidebar">
-        {{ template "dashboard_menu" . }}
+        {{ template "side_menu" . }}
     </div>
     <div class="content">
         <h3>Tareas</h3>
@@ -10,40 +10,110 @@
             Nueva
         </button>
 
-        <table class="table table-striped table-responsive">
-            <thead>
-                <tr>
-                    <th scope="col">Acción</th>
-                    <th scope="col">Nombre</th>
-                    <th scope="col">Descripción</th>
-                    <th scope="col">Timezone</th>
-                    <th scope="col">Endpoint</th>
-                    <th scope="col">Status</th>
-                    <th scope="col">Última ejecución</th>
-                </tr>
-            </thead>
-            <tbody>
-                {{ if .UserTasks }}
-                {{ range .UserTasks }}
-                <tr>
-                    <td></td>
-                    <td>{{ .Name }}</td>
-                    <td>{{ .Description }}</td>
-                    <td>{{ .Timezone }}</td>
-                    <td>{{ .Endpoint }}</td>
-                    <td>{{ .Status }}</td>
-                    <td>{{ .LastRunAt }}</td>
-                </tr>
+        <!-- Tasks Table -->
+        <div class="card">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead>
+                            <tr>
+                                <th>Task Name</th>
+                                <th>Schedule</th>
+                                <th>Next Run</th>
+                                <th>Status</th>
+                                <th>Endpoint</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {{ if .Data.Tasks }}
+                            {{ range .Data.Tasks }}
+                            <tr>
+                                <td>
+                                    <div class="fw-semibold">{{ .Name }}</div>
+                                    <div class="text-muted small">{{ default .Description "No description" }}</div>
+                                </td>
+                                <td>{{ .ScheduleExpression }}</td>
+                                <td>{{ .NextRunAt.Format "2006-01-02 15:04" }}</td>
+                                <td>
+                                    {{ if eq .Status "active" }}
+                                    <span class="badge bg-success bg-opacity-10 text-success">Active</span>
+                                    {{ else if eq .Status "paused" }}
+                                    <span class="badge bg-warning bg-opacity-10 text-warning">Paused</span>
+                                    {{ else if eq .Status "failed" }}
+                                    <span class="badge bg-danger bg-opacity-10 text-danger">Failed</span>
+                                    {{ else }}
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary">{{ .Status }}</span>
+                                    {{ end }}
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge bg-primary bg-opacity-10 text-primary me-2">{{ .Method }}</span>
+                                        <span class="text-truncate" title="{{ .Endpoint }}">{{ .Endpoint }}</span>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="d-flex gap-2">
+                                        <a href="/tasks/{{ .ID }}" class="btn btn-sm btn-outline-primary">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="/tasks/{{ .ID }}/edit" class="btn btn-sm btn-outline-secondary">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <form method="post" action="/tasks/{{ .ID }}/delete" class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-outline-danger"
+                                                onclick="return confirm('Are you sure?')">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            {{ else }}
+                            <tr>
+                                <td colspan="6" class="text-center py-4">
+                                    <div class="text-muted">No tasks found. Create your first task!</div>
+                                </td>
+                            </tr>
+                            {{ end }}
+                            {{ else }}
+                            <tr>
+                                <td colspan="7" class="text-center">No hay tareas</td>
+                            </tr>
+                            {{ end }}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                {{ if gt .Data.TotalPages 1 }}
+                <div class="d-flex justify-content-between align-items-center p-3">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            {{ range seq 1 .Data.TotalPages }}
+                            <li class="page-item"><a class="page-link" href="/tasks?page={{ . }}">{{ . }}</a></li>
+                            {{ end }}
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
                 {{ end }}
-                {{ else }}
-                <tr>
-                    <td colspan="7" class="text-center">No hay tareas</td>
-                </tr>
-                {{ end }}
-            </tbody>
-        </table>
+            </div>
+        </div>
     </div>
 </div>
+</div>
+
+
 
 <!-- Modal -->
 <div class="modal fade" id="taskModal" tabindex="-1" aria-labelledby="taskModal" aria-hidden="true">
@@ -114,9 +184,10 @@
 
                                     <div id="cronOptions" style="display: none;">
                                         <div class="form-group mb-3">
-                                            <label for="cronExpression" class="form-label">Cron Expression *</label>
-                                            <input type="text" class="form-control" id="cronExpression"
-                                                name="cron_expression" placeholder="*/5 * * * *">
+                                            <label for="schedule_expression" class="form-label">Cron Expression
+                                                *</label>
+                                            <input type="text" class="form-control" id="schedule_expression"
+                                                name="schedule_expression" placeholder="*/5 * * * *">
                                             <div class="form-text">
                                                 <a href="#" data-bs-toggle="modal" data-bs-target="#cronHelpModal">Cron
                                                     expression help</a>
@@ -202,9 +273,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <button type="button" id="addHeader" class="btn btn-sm btn-outline-primary d-flex align-items-center">
+                                <button type="button" id="addHeader"
+                                    class="btn btn-sm btn-outline-primary d-flex align-items-center">
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" width="20px" height="20px" class="me-2">
+                                        stroke-width="1.5" stroke="currentColor" width="20px" height="20px"
+                                        class="me-2">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                     </svg>

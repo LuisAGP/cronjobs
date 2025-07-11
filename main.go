@@ -69,6 +69,8 @@ func main() {
 		protected.GET("/tasks", handlers.TasksView)
 		protected.GET("/logs", handlers.LogsView)
 		protected.GET("/docs", handlers.DocsView)
+
+		protected.POST("/tasks", handlers.SaveTask)
 	}
 
 	/*********************************************************************************************/
@@ -86,6 +88,8 @@ func main() {
 		protectedAPI.GET("/ping", func(c *gin.Context) {
 			c.JSON(http.StatusAccepted, gin.H{"message": "pong"})
 		})
+
+		protectedAPI.POST("/tasks", handlers.SaveTask)
 	}
 
 	/*********************************************************************************************/
