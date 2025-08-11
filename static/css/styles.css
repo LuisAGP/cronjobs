@@ -59,10 +59,10 @@ body {
     }
 }
 
-.footer {
+footer {
     background-color: var(--bg-dark);
     color: var(--text-light);
-    padding: 2rem 3rem;
+    padding: 1rem 0;
     z-index: 5;
 }
 
