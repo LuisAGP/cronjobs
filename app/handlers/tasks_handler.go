@@ -31,7 +31,7 @@ func TasksView(c *gin.Context) {
 
 	// Get query parameters
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
-	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "1"))
+	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
 	status := c.Query("status")
 	search := c.Query("search")
 	sortBy := c.DefaultQuery("sort_by", "next_run_at")
